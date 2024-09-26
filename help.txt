@@ -1,0 +1,38 @@
+создание jar файла:
+    jar cfe WindowApp.jar WindowApp ./*.class
+
+компиляция в совместимости с java 7:
+    javac -source 1.7 -target 1.7 WindowApp.java
+
+запуск программы
+    java -jar MyApp.jar
+
+компиляция в совместимости с java 7 многофайлового проекта:
+    javac -source 1.7 -target 1.7 -d out src/com/example/*.java
+
+jar файл из много файлового проекта:
+    jar cfe MyApp.jar com.example.Main -C out .
+
+
+как то так работать с библиотеками (компилирует и java и библиотеку)
+    javac -source 1.7 -target 1.7 -d out -cp lib/jfreechart-1.0.1.jar src/com/example/*.java
+    jar cfe MyApp.jar com.example.WindowApp -C out . -C lib jfreechart-1.0.1.jar
+            jar: Это команда для работы с JAR файлами в Java.
+            cfe: Это комбинация опций:
+                c: Создает новый JAR файл.
+                f: Указывает, что имя JAR файла будет следовать за этой опцией.
+                e: Указывает основной класс, который будет запущен при выполнении JAR файла.
+            MyApp.jar: Имя создаваемого JAR файла.
+            com.example.ChartExample: Полное имя основного класса, который будет запущен при выполнении JAR файла.
+            -C out .: Эта часть команды указывает, что все файлы из директории out должны быть добавлены в корень JAR файла. Опция -C меняет текущую директорию на out, а затем добавляет все файлы из этой директории (.).
+            -C lib jfreechart-x.y.z.jar: Эта часть команды указывает, что файл jfreechart-x.y.z.jar из директории lib должен быть добавлен в JAR файл. Опция -C меняет текущую директорию на lib, а затем добавляет указанный файл.
+
+
+В общем когда есть внешняя библиотека все грустно и нужно делать так:
+    javac -cp "lib/jfreechart-1.0.1.jar;lib/jcommon-1.0.0.jar" -d out src/com/example/*.java 
+    java -cp "lib/jfreechart-1.0.1.jar;lib/jcommon-1.0.0.jar;out" com.example.WindowApp 
+
+Или при наличии manifest.txt:
+    javac -source 1.7 -target 1.7 -cp "lib/jfreechart-1.0.1.jar;lib/jcommon-1.0.0.jar" -d out src/com/example/*.java 
+    jar cfm MyApp.jar manifest.txt -C out .
+    java -jar MyApp.jar

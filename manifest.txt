@@ -1,0 +1,2 @@
+Main-Class: com.example.WindowApp
+Class-Path: lib/jfreechart-1.0.1.jar lib/jcommon-1.0.0.jar
